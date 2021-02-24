@@ -19444,7 +19444,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
-    _c("h1", { staticClass: "text-5xl font-bold text-blue-500 mb-20" }, [
+    _c("h1", { staticClass: "text-5xl font-bold text-astral-500 mb-20" }, [
       _vm._v("My Team")
     ]),
     _vm._v(" "),
