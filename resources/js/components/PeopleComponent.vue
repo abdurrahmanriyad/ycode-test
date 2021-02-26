@@ -53,7 +53,7 @@
       <div>
         <ul class="divide-y divide-gray-200">
           <li class="py-4 flex" v-for="(person, index) in people" :key="index">
-            <img class="h-10 w-10 rounded-full" v-if="person.photo" :src="person.photo.thumbnails.large.url" :alt="person.name">
+            <img class="h-10 w-10 rounded-full" v-if="person.photo" :src="getPhotoUrlFromPhotoObject(person.photo)" :alt="person.name">
             <div class="ml-3">
               <p class="text-sm font-medium text-gray-900" v-text="person.name"></p>
               <p class="text-sm text-gray-500" v-text="person.email"></p>
@@ -106,6 +106,7 @@
                 .then(response => {
                     this.$set(this.people, this.people.length, response.data.data)
                     this.resetError()
+                    this.resetForm()
                     alert(response?.data?.message || 'Successfully added new team member!')
                 })
                 .catch(error => {
@@ -148,6 +149,20 @@
             },
             resetError() {
                 this.errors = []
+            },
+            resetForm() {
+                this.personForm = {
+                    name: null,
+                    email: null,
+                    photo: null
+                }
+            },
+            getPhotoUrlFromPhotoObject(photo) {
+                if (photo.url) return photo.url
+
+                else if (photo.thumbnails) return photo.thumbnails.large.url
+
+                return ''
             }
         }
     }

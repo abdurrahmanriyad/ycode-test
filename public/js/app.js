@@ -1969,6 +1969,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         _this2.resetError();
 
+        _this2.resetForm();
+
         alert((response === null || response === void 0 ? void 0 : (_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.message) || 'Successfully added new team member!');
       })["catch"](function (error) {
         var _error$response, _error$response$data, _error$response2, _error$response2$data;
@@ -2012,6 +2014,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     resetError: function resetError() {
       this.errors = [];
+    },
+    resetForm: function resetForm() {
+      this.personForm = {
+        name: null,
+        email: null,
+        photo: null
+      };
+    },
+    getPhotoUrlFromPhotoObject: function getPhotoUrlFromPhotoObject(photo) {
+      if (photo.url) return photo.url;else if (photo.thumbnails) return photo.thumbnails.large.url;
+      return '';
     }
   }
 });
@@ -19780,7 +19793,7 @@ var render = function() {
                 ? _c("img", {
                     staticClass: "h-10 w-10 rounded-full",
                     attrs: {
-                      src: person.photo.thumbnails.large.url,
+                      src: _vm.getPhotoUrlFromPhotoObject(person.photo),
                       alt: person.name
                     }
                   })
