@@ -4,7 +4,7 @@
     <div class="grid grid-cols-2 gap-20">
       <div>
         <h2 class="text-xl mb-5">Add new team member</h2>
-        <form class="space-y-5">
+        <form class="space-y-5" @submit.prevent="addNewMember">
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
             <div class="mt-1">
@@ -44,9 +44,10 @@
               </div>
             </div>
           </div>
-          <button type="button" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            Submit
-          </button>
+          <ul class="list-none md:list-disc list-inside" v-if="errors.length" v-for="(error, index) in errors" :key="index">
+                <li v-text="error" class="text-red-500"></li>
+          </ul>
+          <button type="submit" v-text="newMemberFormSubmitText" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"></button>
         </form>
       </div>
       <div>
@@ -65,6 +66,8 @@
 </template>
 
 <script>
+    import axios from 'axios'
+
     export default {
         props: {
             people: {
@@ -74,6 +77,8 @@
         },
         data() {
             return {
+                errors: [],
+                processing: false,
                 personForm: {
                     name: null,
                     email: null,
@@ -81,7 +86,28 @@
                 }
             }
         },
+        computed: {
+            newMemberFormSubmitText() {
+                return this.processing ? 'Processing...' : 'Submit'
+            }
+        },
         methods: {
+            addNewMember() {
+                this.processing = true
+
+                axios.post('ajax/people', this.buildRequestData())
+                .then(response => {
+                    this.resetError()
+                    alert(response?.data?.message || 'Successfully added new team member!')
+                })
+                .catch(error => {
+                    alert(error?.response?.data?.message || 'Something went wrong!')
+                    this.setError(error?.response?.data?.errors || {})
+                })
+                .finally(() => {
+                    this.processing = false
+                })
+            },
             setPhoto() {
                 if (!this.$refs.photo.files.length) {
                     alert('No photo selected!')
@@ -89,9 +115,30 @@
 
                 this.personForm.photo    = this.$refs.photo.files[0]
             },
+            buildRequestData() {
+                let formData = new FormData();
+
+                Object.keys(this.personForm).forEach(key => {
+                    if (null !== this.personForm[key]) {
+                        formData.append(key, this.personForm[key])
+                    }
+                })
+
+                return formData;
+            },
             clearExistingPhoto() {
                 this.personForm.photo = null
                 this.$refs.photo.value = null
+            },
+            setError(errorResponse) {
+                let errors = []
+                Object.keys(errorResponse).forEach(key => {
+                    errors = [...errors, ...errorResponse[key]]
+                })
+                this.errors = errors
+            },
+            resetError() {
+                this.errors = []
             }
         }
     }
