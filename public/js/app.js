@@ -19726,7 +19726,8 @@ var render = function() {
                                   attrs: {
                                     id: "file-upload",
                                     name: "file-upload",
-                                    type: "file"
+                                    type: "file",
+                                    accept: "image/jpeg"
                                   },
                                   on: {
                                     click: _vm.clearExistingPhoto,
