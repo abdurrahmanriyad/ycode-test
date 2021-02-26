@@ -10,17 +10,34 @@ use Illuminate\Support\Facades\Http;
 class PeopleController extends Controller
 {
 
+    /**
+     * Shows the view where member can be added and show existing members
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
 	public function index()
 	{
 		return view('people');
 	}
 
+    /**
+     * Get all the team members from airtable/any other provider
+     * @param Manager $teamDatabaseManager
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getAll(Manager $teamDatabaseManager)
     {
         $people = $teamDatabaseManager->getAll();
         return response()->json($people);
     }
 
+    /**
+     * Stores new team member to airtable/any other provider through  api.
+     * @param CreateTeamMember $request
+     * @param FileUploader $fileUploader
+     * @param Manager $teamDatabaseManager
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\InvalidFile
+     */
     public function store(CreateTeamMember $request, FileUploader $fileUploader, Manager $teamDatabaseManager)
     {
         $data = $request->validated();
@@ -43,6 +60,11 @@ class PeopleController extends Controller
         ]);
 	}
 
+    /**
+     * prepares request body to create a new team member
+     * @param array $data
+     * @return array[]
+     */
     private function prepareNewTeamRequest(array $data) : array
     {
         $payload =  [
