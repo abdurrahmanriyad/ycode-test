@@ -1908,22 +1908,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: [],
+  props: {
+    people: {
+      required: true,
+      type: Array
+    }
+  },
   data: function data() {
     return {};
   },
@@ -19528,7 +19519,36 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(3)
+      _c("div", [
+        _c(
+          "ul",
+          { staticClass: "divide-y divide-gray-200" },
+          _vm._l(_vm.people, function(person, index) {
+            return _c("li", { key: index, staticClass: "py-4 flex" }, [
+              _c("img", {
+                staticClass: "h-10 w-10 rounded-full",
+                attrs: {
+                  src: person.photo.thumbnails.large.url,
+                  alt: person.name
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "ml-3" }, [
+                _c("p", {
+                  staticClass: "text-sm font-medium text-gray-900",
+                  domProps: { textContent: _vm._s(person.name) }
+                }),
+                _vm._v(" "),
+                _c("p", {
+                  staticClass: "text-sm text-gray-500",
+                  domProps: { textContent: _vm._s(person.email) }
+                })
+              ])
+            ])
+          }),
+          0
+        )
+      ])
     ])
   ])
 }
@@ -19612,77 +19632,6 @@ var staticRenderFns = [
       ),
       _vm._v(" "),
       _c("p", { staticClass: "pl-1" }, [_vm._v("or drag and drop")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("ul", { staticClass: "divide-y divide-gray-200" }, [
-        _c("li", { staticClass: "py-4 flex" }, [
-          _c("img", {
-            staticClass: "h-10 w-10 rounded-full",
-            attrs: {
-              src:
-                "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-              alt: ""
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "ml-3" }, [
-            _c("p", { staticClass: "text-sm font-medium text-gray-900" }, [
-              _vm._v("Calvin Hawkins")
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "text-sm text-gray-500" }, [
-              _vm._v("calvin.hawkins@example.com")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "py-4 flex" }, [
-          _c("img", {
-            staticClass: "h-10 w-10 rounded-full",
-            attrs: {
-              src:
-                "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-              alt: ""
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "ml-3" }, [
-            _c("p", { staticClass: "text-sm font-medium text-gray-900" }, [
-              _vm._v("Kristen Ramos")
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "text-sm text-gray-500" }, [
-              _vm._v("kristen.ramos@example.com")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "py-4 flex" }, [
-          _c("img", {
-            staticClass: "h-10 w-10 rounded-full",
-            attrs: {
-              src:
-                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-              alt: ""
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "ml-3" }, [
-            _c("p", { staticClass: "text-sm font-medium text-gray-900" }, [
-              _vm._v("Ted Fox")
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "text-sm text-gray-500" }, [
-              _vm._v("ted.fox@example.com")
-            ])
-          ])
-        ])
-      ])
     ])
   }
 ]

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Team\Manager;
+use Illuminate\Support\Facades\Http;
+
 class PeopleController extends Controller
 {
 
-	public function index()
+	public function index(Manager $teamDatabaseManager)
 	{
-		return view('people');
+	    $people = $teamDatabaseManager->getAll();
+		return view('people', compact('people'));
 	}
-
 }
