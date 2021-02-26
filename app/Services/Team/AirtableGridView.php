@@ -32,7 +32,7 @@ class AirtableGridView implements DatabaseClient
     {
         $response = Http::withToken($this->token)
             ->get($this->endpoint);
-
+        
         if (!$response->successful()) {
             logger()->debug('Failed to load records from AirGrid', $response->json());
             throw new FailedToFetchTableData;

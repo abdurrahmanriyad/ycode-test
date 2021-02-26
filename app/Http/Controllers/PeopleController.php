@@ -14,10 +14,10 @@ class PeopleController extends Controller
      * Shows the view where member can be added and show existing members
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-	public function index()
-	{
-		return view('people');
-	}
+    public function index()
+    {
+        return view('people');
+    }
 
     /**
      * Get all the team members from airtable/any other provider
@@ -26,6 +26,10 @@ class PeopleController extends Controller
      */
     public function getAll(Manager $teamDatabaseManager)
     {
+        if (!request()->wantsJson()) {
+            abort(404);
+        }
+
         $people = $teamDatabaseManager->getAll();
         return response()->json($people);
     }
@@ -58,16 +62,16 @@ class PeopleController extends Controller
             'message' => 'Successfully added new team member!',
             'data' => $newRecord
         ]);
-	}
+    }
 
     /**
      * prepares request body to create a new team member
      * @param array $data
      * @return array[]
      */
-    private function prepareNewTeamRequest(array $data) : array
+    private function prepareNewTeamRequest(array $data): array
     {
-        $payload =  [
+        $payload = [
             'fields' => [
                 'Name' => $data['name'],
                 'Email' => $data['email'],
