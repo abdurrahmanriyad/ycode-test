@@ -1908,6 +1908,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     people: {
@@ -1916,11 +1919,27 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   data: function data() {
-    return {};
+    return {
+      personForm: {
+        name: null,
+        email: null,
+        photo: null
+      }
+    };
   },
-  mounted: function mounted() {},
-  watch: {},
-  methods: {}
+  methods: {
+    setPhoto: function setPhoto() {
+      if (!this.$refs.photo.files.length) {
+        alert('No photo selected!');
+      }
+
+      this.personForm.photo = this.$refs.photo.files[0];
+    },
+    clearExistingPhoto: function clearExistingPhoto() {
+      this.personForm.photo = null;
+      this.$refs.photo.value = null;
+    }
+  }
 });
 
 /***/ }),
@@ -19446,9 +19465,87 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("form", { staticClass: "space-y-5" }, [
-          _vm._m(0),
+          _c("div", [
+            _c(
+              "label",
+              {
+                staticClass: "block text-sm font-medium text-gray-700",
+                attrs: { for: "name" }
+              },
+              [_vm._v("Name")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "mt-1" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.personForm.name,
+                    expression: "personForm.name"
+                  }
+                ],
+                staticClass:
+                  "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 p-3 border rounded-md",
+                attrs: {
+                  type: "text",
+                  name: "name",
+                  id: "name",
+                  placeholder: "Calvin Hawkins"
+                },
+                domProps: { value: _vm.personForm.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.personForm, "name", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
           _vm._v(" "),
-          _vm._m(1),
+          _c("div", [
+            _c(
+              "label",
+              {
+                staticClass: "block text-sm font-medium text-gray-700",
+                attrs: { for: "email" }
+              },
+              [_vm._v("Email")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "mt-1" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.personForm.email,
+                    expression: "personForm.email"
+                  }
+                ],
+                staticClass:
+                  "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 p-3 border rounded-md",
+                attrs: {
+                  type: "text",
+                  name: "email",
+                  id: "email",
+                  placeholder: "you@example.com"
+                },
+                domProps: { value: _vm.personForm.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.personForm, "email", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
           _vm._v(" "),
           _c("div", [
             _c(
@@ -19494,12 +19591,62 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _vm._m(2),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "text-xs text-gray-500" }, [
-                      _vm._v(
-                        "\n                  PNG, JPG, GIF up to 10MB\n                "
-                      )
+                    _c("div", [
+                      _vm.personForm.photo
+                        ? _c(
+                            "p",
+                            { staticClass: "text-xs text-gray-500 mb-2" },
+                            [
+                              _c("strong", [_vm._v("Selected file: ")]),
+                              _vm._v(" " + _vm._s(_vm.personForm.photo.name))
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "flex justify-center text-sm text-gray-600"
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass:
+                                "relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500",
+                              attrs: { for: "file-upload" }
+                            },
+                            [
+                              _c("span", [_vm._v("Upload a file")]),
+                              _vm._v(" "),
+                              _c("input", {
+                                ref: "photo",
+                                staticClass: "sr-only",
+                                attrs: {
+                                  id: "file-upload",
+                                  name: "file-upload",
+                                  type: "file"
+                                },
+                                on: {
+                                  click: _vm.clearExistingPhoto,
+                                  change: _vm.setPhoto
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "pl-1" }, [
+                            _vm._v("or drag and drop")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-xs text-gray-500" }, [
+                        _vm._v(
+                          "\n                        JPG up to 100MB\n                    "
+                        )
+                      ])
                     ])
                   ])
                 ]
@@ -19552,89 +19699,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c(
-        "label",
-        {
-          staticClass: "block text-sm font-medium text-gray-700",
-          attrs: { for: "name" }
-        },
-        [_vm._v("Name")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "mt-1" }, [
-        _c("input", {
-          staticClass:
-            "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 p-3 border rounded-md",
-          attrs: {
-            type: "text",
-            name: "name",
-            id: "name",
-            placeholder: "Calvin Hawkins"
-          }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c(
-        "label",
-        {
-          staticClass: "block text-sm font-medium text-gray-700",
-          attrs: { for: "email" }
-        },
-        [_vm._v("Email")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "mt-1" }, [
-        _c("input", {
-          staticClass:
-            "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 p-3 border rounded-md",
-          attrs: {
-            type: "text",
-            name: "email",
-            id: "email",
-            placeholder: "you@example.com"
-          }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex text-sm text-gray-600" }, [
-      _c(
-        "label",
-        {
-          staticClass:
-            "relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500",
-          attrs: { for: "file-upload" }
-        },
-        [
-          _c("span", [_vm._v("Upload a file")]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "sr-only",
-            attrs: { id: "file-upload", name: "file-upload", type: "file" }
-          })
-        ]
-      ),
-      _vm._v(" "),
-      _c("p", { staticClass: "pl-1" }, [_vm._v("or drag and drop")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
