@@ -19491,7 +19491,8 @@ var render = function() {
                   type: "text",
                   name: "name",
                   id: "name",
-                  placeholder: "Calvin Hawkins"
+                  placeholder: "Calvin Hawkins",
+                  required: ""
                 },
                 domProps: { value: _vm.personForm.name },
                 on: {
@@ -19532,7 +19533,8 @@ var render = function() {
                   type: "text",
                   name: "email",
                   id: "email",
-                  placeholder: "you@example.com"
+                  placeholder: "you@example.com",
+                  required: ""
                 },
                 domProps: { value: _vm.personForm.email },
                 on: {
