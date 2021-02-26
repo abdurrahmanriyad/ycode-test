@@ -6,7 +6,7 @@
     </head>
     <body class="py-20">
         <div id="app">
-            <people-component :people="{{ $people }}"></people-component>
+            <people-component></people-component>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
     </body>

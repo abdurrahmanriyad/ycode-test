@@ -53,7 +53,7 @@
       <div>
         <ul class="divide-y divide-gray-200">
           <li class="py-4 flex" v-for="(person, index) in people" :key="index">
-            <img class="h-10 w-10 rounded-full" :src="person.photo.thumbnails.large.url" :alt="person.name">
+            <img class="h-10 w-10 rounded-full" v-if="person.photo" :src="person.photo.thumbnails.large.url" :alt="person.name">
             <div class="ml-3">
               <p class="text-sm font-medium text-gray-900" v-text="person.name"></p>
               <p class="text-sm text-gray-500" v-text="person.email"></p>
@@ -69,16 +69,11 @@
     import axios from 'axios'
 
     export default {
-        props: {
-            people: {
-                required: true,
-                type: Array
-            }
-        },
         data() {
             return {
                 errors: [],
                 processing: false,
+                people: [],
                 personForm: {
                     name: null,
                     email: null,
@@ -91,16 +86,30 @@
                 return this.processing ? 'Processing...' : 'Submit'
             }
         },
+        mounted() {
+            this.fetchAllMembers();
+        },
         methods: {
+            fetchAllMembers() {
+                axios.get('ajax/people')
+                .then(response => {
+                    this.people = response.data
+                })
+                .catch(error => {
+                    alert('Failed to load team members data!')
+                })
+            },
             addNewMember() {
                 this.processing = true
 
                 axios.post('ajax/people', this.buildRequestData())
                 .then(response => {
+                    this.$set(this.people, this.people.length, response.data.data)
                     this.resetError()
                     alert(response?.data?.message || 'Successfully added new team member!')
                 })
                 .catch(error => {
+                    console.log('reror', error);
                     alert(error?.response?.data?.message || 'Something went wrong!')
                     this.setError(error?.response?.data?.errors || {})
                 })

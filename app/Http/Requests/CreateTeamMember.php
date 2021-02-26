@@ -26,7 +26,7 @@ class CreateTeamMember extends FormRequest
         return [
             'name' => ['required', 'string', 'min:2', 'max:100'],
             'email' => ['required', 'email', 'min:5', 'max:100'],
-            'photo' => ['sometimes', 'file', 'mimes:jpg,jpeg', 'max:100000']
+            'photo' => ['sometimes', 'image', 'mimes:jpg,jpeg', 'max:100000']
         ];
     }
 }

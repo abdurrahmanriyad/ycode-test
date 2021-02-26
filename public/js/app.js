@@ -1928,16 +1928,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: {
-    people: {
-      required: true,
-      type: Array
-    }
-  },
   data: function data() {
     return {
       errors: [],
       processing: false,
+      people: [],
       personForm: {
         name: null,
         email: null,
@@ -1950,25 +1945,40 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       return this.processing ? 'Processing...' : 'Submit';
     }
   },
+  mounted: function mounted() {
+    this.fetchAllMembers();
+  },
   methods: {
-    addNewMember: function addNewMember() {
+    fetchAllMembers: function fetchAllMembers() {
       var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('ajax/people').then(function (response) {
+        _this.people = response.data;
+      })["catch"](function (error) {
+        alert('Failed to load team members data!');
+      });
+    },
+    addNewMember: function addNewMember() {
+      var _this2 = this;
 
       this.processing = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('ajax/people', this.buildRequestData()).then(function (response) {
         var _response$data;
 
-        _this.resetError();
+        _this2.$set(_this2.people, _this2.people.length, response.data.data);
+
+        _this2.resetError();
 
         alert((response === null || response === void 0 ? void 0 : (_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.message) || 'Successfully added new team member!');
       })["catch"](function (error) {
         var _error$response, _error$response$data, _error$response2, _error$response2$data;
 
+        console.log('reror', error);
         alert((error === null || error === void 0 ? void 0 : (_error$response = error.response) === null || _error$response === void 0 ? void 0 : (_error$response$data = _error$response.data) === null || _error$response$data === void 0 ? void 0 : _error$response$data.message) || 'Something went wrong!');
 
-        _this.setError((error === null || error === void 0 ? void 0 : (_error$response2 = error.response) === null || _error$response2 === void 0 ? void 0 : (_error$response2$data = _error$response2.data) === null || _error$response2$data === void 0 ? void 0 : _error$response2$data.errors) || {});
+        _this2.setError((error === null || error === void 0 ? void 0 : (_error$response2 = error.response) === null || _error$response2 === void 0 ? void 0 : (_error$response2$data = _error$response2.data) === null || _error$response2$data === void 0 ? void 0 : _error$response2$data.errors) || {});
       })["finally"](function () {
-        _this.processing = false;
+        _this2.processing = false;
       });
     },
     setPhoto: function setPhoto() {
@@ -1979,12 +1989,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.personForm.photo = this.$refs.photo.files[0];
     },
     buildRequestData: function buildRequestData() {
-      var _this2 = this;
+      var _this3 = this;
 
       var formData = new FormData();
       Object.keys(this.personForm).forEach(function (key) {
-        if (null !== _this2.personForm[key]) {
-          formData.append(key, _this2.personForm[key]);
+        if (null !== _this3.personForm[key]) {
+          formData.append(key, _this3.personForm[key]);
         }
       });
       return formData;
@@ -19766,13 +19776,15 @@ var render = function() {
           { staticClass: "divide-y divide-gray-200" },
           _vm._l(_vm.people, function(person, index) {
             return _c("li", { key: index, staticClass: "py-4 flex" }, [
-              _c("img", {
-                staticClass: "h-10 w-10 rounded-full",
-                attrs: {
-                  src: person.photo.thumbnails.large.url,
-                  alt: person.name
-                }
-              }),
+              person.photo
+                ? _c("img", {
+                    staticClass: "h-10 w-10 rounded-full",
+                    attrs: {
+                      src: person.photo.thumbnails.large.url,
+                      alt: person.name
+                    }
+                  })
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "ml-3" }, [
                 _c("p", {

@@ -23,8 +23,8 @@ class Manager
         return $this->databaseClient->getAll();
     }
 
-    public function create() : bool
+    public function create(array $data) : array
     {
-        return $this->databaseClient->create();
+        return $this->databaseClient->create($data);
     }
 }

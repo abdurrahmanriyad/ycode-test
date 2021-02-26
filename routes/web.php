@@ -16,4 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PeopleController::class, 'index']);
 
+Route::get('/ajax/people', [PeopleController::class, 'getAll']);
+
 Route::post('/ajax/people', [PeopleController::class, 'store']);

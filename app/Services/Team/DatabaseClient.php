@@ -10,5 +10,5 @@ interface DatabaseClient
 {
     public function getAll(): Collection;
 
-    public function create(): bool;
+    public function create(array $data): array;
 }

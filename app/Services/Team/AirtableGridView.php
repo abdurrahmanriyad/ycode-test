@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Services\Team;
 
+use App\Exceptions\FailedToCreateTableData;
 use App\Exceptions\FailedToFetchTableData;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
@@ -13,54 +14,57 @@ class AirtableGridView implements DatabaseClient
 {
     private string $token;
 
-    protected string $baseUrl = "https://api.airtable.com/v0";
-
-    protected array $endpoints = [];
+    protected string $endpoint;
 
     public function __construct()
     {
         $this->token = config('team.providers.airtable.api_key') ?? '';
 
-        $this->initializeEndpoints();
+        $this->endpoint = config('team.providers.airtable.table_endpoint') ?? '';
     }
 
     public function getAll(): Collection
     {
         $response = Http::withToken($this->token)
-            ->get($this->endpoints['getAll']);
+            ->get($this->endpoint);
 
         if (!$response->successful()) {
             throw new FailedToFetchTableData;
         }
 
-        return  $this->buildCollectionOfRecords($response->json()['records']);
+        return $this->buildCollectionOfRecords($response->json()['records']);
     }
 
-    public function create(): bool
+    public function create(array $data): array
     {
-        // TODO: Implement create() method.
+        $response = Http::withToken($this->token)
+            ->post($this->endpoint, $data);
+
+        if (!$response->successful()) {
+            dd($response->json());
+            throw new FailedToCreateTableData;
+        }
+
+        return $this->buildRecord($response->json());
     }
 
-    private function buildCollectionOfRecords(array $records) : Collection
+    private function buildCollectionOfRecords(array $records): Collection
     {
         $recordCollection = collect();
 
         foreach ($records as $record) {
-            $recordCollection->push([
-                'name' => $record['fields']['Name'],
-                'photo' => $record['fields']['Photo'][0],
-                'email' => $record['fields']['Email']
-            ]);
+            $recordCollection->push($this->buildRecord($record));
         }
 
-        return  $recordCollection;
+        return $recordCollection;
     }
 
-    private function initializeEndpoints()
+    private function buildRecord(array $record): array
     {
-        $this->endpoints = [
-            'getAll' => $this->baseUrl . '/appeB7iJeBq92AoHD/Grid%20view?view=Grid%20view',
-            'create' => 'asdfasdf'
+        return [
+            'name' => $record['fields']['Name'],
+            'photo' => $record['fields']['Photo'][0] ?? null,
+            'email' => $record['fields']['Email']
         ];
     }
 }
