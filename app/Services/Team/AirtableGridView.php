@@ -34,6 +34,7 @@ class AirtableGridView implements DatabaseClient
             ->get($this->endpoint);
 
         if (!$response->successful()) {
+            logger()->debug('Failed to load records from AirGrid', $response->json());
             throw new FailedToFetchTableData;
         }
 
@@ -52,7 +53,7 @@ class AirtableGridView implements DatabaseClient
             ->post($this->endpoint, $data);
 
         if (!$response->successful()) {
-            dd($response->json());
+            logger()->debug('Failed to create record to AirGrid', $response->json());
             throw new FailedToCreateTableData;
         }
 

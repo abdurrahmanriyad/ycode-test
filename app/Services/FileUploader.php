@@ -16,7 +16,10 @@ class FileUploader
      */
     public function upload(UploadedFile $file, string $dir = '/')
     {
-        if (!$file->isValid()) throw new InvalidFile;
+        if (!$file->isValid()) {
+            logger()->debug('Failed to upload file since the it is invalid');
+            throw new InvalidFile;
+        }
 
         return $file->store($dir, ['disk' => 'public']);
     }
